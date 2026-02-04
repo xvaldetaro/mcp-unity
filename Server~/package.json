@@ -6,7 +6,8 @@
   "type": "module",
   "mcpName": "io.github.codergamester/mcp-unity",
   "bin": {
-    "mcp-unity-server": "./build/index.js"
+    "mcp-unity-server": "./build/index.js",
+    "unity-cli": "./unity-cli.js"
   },
   "files": [
     "build"
