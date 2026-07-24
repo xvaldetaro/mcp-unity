@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { promises as fs } from 'fs';
 import path from 'path';
 
-const COMMANDS = ['execute_menu_item', 'get_menu_items', 'get_logs', 'get_warn_error_logs', 'recompile_scripts'];
+const COMMANDS = ['execute_menu_item', 'get_menu_items', 'get_logs', 'get_warn_error_logs', 'recompile_scripts', 'run_tests'];
 const WARN_ERROR_TYPES = new Set(['Warning', 'Error', 'Exception', 'Assert']);
 const DEFAULT_PORT = 8090;
 const DEFAULT_HOST = 'localhost';
@@ -61,6 +61,9 @@ function printUsage() {
   get_warn_error_logs  (same as get_logs)       unity-cli get_warn_error_logs
   recompile_scripts  [--returnWithLogs]         unity-cli recompile_scripts
                      [--logsLimit 0-1000]
+  run_tests          [--testMode EditMode|PlayMode]  unity-cli run_tests --testMode EditMode
+                     [--testFilter <name>]           unity-cli run_tests --assemblyName EditModeTests
+                     [--assemblyName <name>]
 `
   );
 }
@@ -157,7 +160,7 @@ async function main() {
   const filterWarnError = command === 'get_warn_error_logs';
   const method = (command === 'get_logs' || filterWarnError) ? 'get_console_logs' : command;
 
-  const defaultTimeout = command === 'recompile_scripts' ? RECOMPILE_TIMEOUT : DEFAULT_TIMEOUT;
+  const defaultTimeout = (command === 'recompile_scripts' || command === 'run_tests') ? RECOMPILE_TIMEOUT : DEFAULT_TIMEOUT;
   const timeoutMs = timeout ?? defaultTimeout;
 
   try {
